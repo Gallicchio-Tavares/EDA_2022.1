@@ -68,12 +68,27 @@ void inserirInicio(int x) // inserir no inicio
     temp->next = head; // ajustando a conexao: o temp agr precisa apontar pro no que estava no Head
     head = temp; // agr head é esse novo nó temp.
 }
-/*
+
 int inserirFinal(int x) // inserir no final
 { 
-    
+    Node *temp1 = criarNode(x);
+    if(head == NULL)
+    {
+      temp1->next = head;
+      head = temp1;
+    }
+    else
+    {
+      Node *temp2 = head;
+      while(temp2->next != NULL) // fazer temp2 apontar pro último nó da lista
+      {
+        temp2 = temp2->next; // precisamos atravessar toda a lista até chegar no final
+      }
+      temp2->next = temp1; // fazer o ultimo nó apontar pra aquele q eu quero inserir
+      temp1->prev = temp2; // preciso apontar pro endereço q agora vai ficar atrás do meu nó inserido
+    }
 }
-*/
+
 void deletar() // deletar elemento do inicio
 {
     Node *temp;
@@ -112,6 +127,13 @@ int main()
         else if(opcao == 4)
         {
             deletar();
+        }
+        else if(opcao == 5)
+        {
+            cout << "Digite um numero: ";
+            cin >> num;
+            inserirFinal(num);
+            cout << endl;
         }
     }
 }
