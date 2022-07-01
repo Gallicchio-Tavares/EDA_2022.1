@@ -115,33 +115,44 @@ void deletarFinal()
     tail = temp;
 
 }
-/*
-void deletarMeio(int posicao)
-{
 
+void inserirMeio(int valor, int posicao) // O(n)
+{
+    if(posicao == 1)
+    {
+        inserirInicio(valor);
+        return;
+    }
+    Node *temp1 = criarNode(valor);
+    Node *temp2 = tail->next;
+    while(posicao-1 > 1)
+    {
+        temp2 = temp2->next;
+        posicao--;
+    }
+    temp1->next = temp2->next;
+    temp2->next = temp1;
+    if(temp2 == tail)
+    {
+        tail = tail->next;
+    }
 }
-*/
+
 int main() 
 {
   tail = NULL;
   
-  inserirInicio(10);
-  inserirInicio(20);
-  inserirInicio(30);
-  inserirInicio(40);
-  inserirInicio(50);
+  inserirInicio(10); inserirInicio(20); inserirInicio(30); inserirInicio(40); inserirInicio(50);
   imprimir(); // 50 40 30 20 10
-  inserirFinal(5);
-  imprimir(); // 50 40 30 20 10 5
-  inserirFinal(6);
+  inserirFinal(5); inserirFinal(6);
   imprimir(); // 50 40 30 20 10 5 6
-  inserirMeio(100, 1); // FUNCIONOU -> inserir no inicio
-  inserirMeio(200, 2); // FUNCIONOU -> inserir numa posicao qualquer
-  inserirMeio(400, 8); // funcionou -> inserir no finals
-  imprimir();
-  deletarInicio(); deletarInicio(); deletarInicio(); // 
-  imprimir();
-  deletarFinal();
-  imprimir();
+  inserirMeio(100, 1); inserirMeio(200, 2); inserirMeio(400, 8);
+  imprimir();  // 100 200 50 40 30 20 10 400 5 6
+  deletarInicio(); deletarInicio(); deletarInicio();
+  imprimir();  // 40 30 20 10 400 5 6  
+  deletarFinal(); 
+  imprimir(); // 40 30 20 10 400 5
+  deletarMeio(1); deletarMeio(2); deletarMeio(4);
+  imprimir(); // 30 10 400
 }
 
