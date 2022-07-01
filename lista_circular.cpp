@@ -74,7 +74,7 @@ void inserirMeio(int valor, int posicao) // O(n)
     }
 }
 
-void deletarInicio()
+void deletarInicio() // O(1)
 {
     if(tail == NULL) // se a lista estiver vazia
     {
@@ -92,7 +92,7 @@ void deletarInicio()
     delete temp;
 }
 
-void deletarFinal()
+void deletarFinal() // O(n), já q só tenho 1 ponteiro
 {
     if(tail == NULL) // se a lista estiver vazia
     {
@@ -116,27 +116,40 @@ void deletarFinal()
 
 }
 
-void inserirMeio(int valor, int posicao) // O(n)
+void deletarMeio(int posicao) // O(n)
 {
-    if(posicao == 1)
-    {
-        inserirInicio(valor);
-        return;
-    }
-    Node *temp1 = criarNode(valor);
-    Node *temp2 = tail->next;
-    while(posicao-1 > 1)
-    {
-        temp2 = temp2->next;
-        posicao--;
-    }
-    temp1->next = temp2->next;
-    temp2->next = temp1;
-    if(temp2 == tail)
-    {
-        tail = tail->next;
-    }
+  if(posicao == 1)
+  {
+    deletarInicio();
+    return;
+  }
+  if(tail == NULL) // se a lista estiver vazia
+  {
+    cout << "A lista já está vazia!\n";
+    return;
+  }
+  if(tail->next == tail) // se só tiver 1 elemento na lista
+  {
+    delete tail; // desalocar a memoria
+    tail = NULL; // tail agr tá vazio
+    return; // saio da função
+  }
+  Node *temp = tail->next; // começar no início
+  
+  for(int i = 0; i < posicao - 2; i++)
+  {
+    temp = temp->next; // temp vai ser o nó logo atrás do q eu quero apagar
+  }
+  Node *apagar = temp->next; // temp->next tem o end que eu quero apagar
+  temp->next = apagar->next;
+  if(apagar == tail) // se o nó for o último
+  {
+    tail = temp; // tem q atualizar o temp
+  }
+  delete apagar;
+  apagar = NULL;
 }
+
 
 int main() 
 {
