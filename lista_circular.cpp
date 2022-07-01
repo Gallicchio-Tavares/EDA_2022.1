@@ -6,12 +6,12 @@ struct Node{
   struct Node *next;
 };
 
-struct Node *tail;
+struct Node *tail; // aponta pro final, ao inves do inicio
 
-void imprimir()
+void imprimir() // O(n)
 {
   Node *temp = tail->next; 
-  do
+  do 
     {
       cout << temp->data << " ";
       temp = temp->next;
@@ -27,7 +27,7 @@ struct Node* criarNode(int x) // generalizar a criação de um nó em uma funç�
     return novoNode;
 }
 
-void inserir(int x)
+void inserirInicio(int x) // O(1)
 {
   Node *temp = criarNode(x);
   if(tail == NULL) // se a lista estiver vazia
@@ -39,17 +39,109 @@ void inserir(int x)
   tail->next = temp; // o ultimo agr aponta pro temp, q virou o primeiro
 }
 
+void inserirFinal(int x) // 0(1)
+{
+    Node *temp = criarNode(x);
+    if(tail == NULL) // se a lista estiver vazia
+    {
+        tail = temp;
+        return;
+    }
+    temp->next = tail->next; // o temp agr tem q apontar pro primeiro
+    tail->next = temp; // o que antes era o ultimo agr aponta pro meu novo nó
+    tail = tail->next; // tail agr aponta pro meu novo último nó
+}
+
+void inserirMeio(int valor, int posicao) // O(n)
+{
+    if(posicao == 1)
+    {
+        inserirInicio(valor);
+        return;
+    }
+    Node *temp1 = criarNode(valor);
+    Node *temp2 = tail->next;
+    while(posicao-1 > 1)
+    {
+        temp2 = temp2->next;
+        posicao--;
+    }
+    temp1->next = temp2->next;
+    temp2->next = temp1;
+    if(temp2 == tail)
+    {
+        tail = tail->next;
+    }
+}
+
+void deletarInicio()
+{
+    if(tail == NULL) // se a lista estiver vazia
+    {
+        cout << "A lista já está vazia!\n";
+        return;
+    }
+    if(tail->next == tail) // se só tiver 1 elemento na lista
+    {
+        delete tail; // desalocar a memoria
+        tail = NULL; // tail agr tá vazio
+        return; // saio da função
+    }
+    Node *temp = tail->next; // temp tem q ser o primeiro nó
+    tail->next = temp->next; // tail tem q apontar pro segundo nó
+    delete temp;
+}
+
+void deletarFinal()
+{
+    if(tail == NULL) // se a lista estiver vazia
+    {
+        cout << "A lista já está vazia!\n";
+        return;
+    }
+    if(tail->next == tail) // se só tiver 1 elemento na lista
+    {
+        delete tail; // desalocar a memoria
+        tail = NULL; // tail agr tá vazio
+        return; // saio da função
+    }
+    Node *temp = tail->next;
+    while(temp->next != tail)
+    {
+        temp = temp->next;
+    }
+    temp->next = tail->next;
+    delete tail;
+    tail = temp;
+
+}
+/*
+void deletarMeio(int posicao)
+{
+
+}
+*/
 int main() 
 {
   tail = NULL;
   
-  inserir(10);
-  imprimir(); // 10
-  inserir(20);
-  imprimir(); // 20 10
-  inserir(30);
-  imprimir(); // 30 20 10
-  inserir(40);
-  inserir(50);
-  imprimir(); // 50 40 20 10
+  inserirInicio(10);
+  inserirInicio(20);
+  inserirInicio(30);
+  inserirInicio(40);
+  inserirInicio(50);
+  imprimir(); // 50 40 30 20 10
+  inserirFinal(5);
+  imprimir(); // 50 40 30 20 10 5
+  inserirFinal(6);
+  imprimir(); // 50 40 30 20 10 5 6
+  inserirMeio(100, 1); // FUNCIONOU -> inserir no inicio
+  inserirMeio(200, 2); // FUNCIONOU -> inserir numa posicao qualquer
+  inserirMeio(400, 8); // funcionou -> inserir no finals
+  imprimir();
+  deletarInicio(); deletarInicio(); deletarInicio(); // 
+  imprimir();
+  deletarFinal();
+  imprimir();
 }
+
